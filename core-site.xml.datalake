@@ -54,7 +54,7 @@
 
 <property>
 <name>fs.dl.impl.transportScheme</name>
-<value>https</value>
+<value>http</value>
 </property>
 
 <!-- This tells the DataLake client if it should encrypt/decrypt files when
