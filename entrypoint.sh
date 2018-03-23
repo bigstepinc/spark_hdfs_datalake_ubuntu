@@ -8,8 +8,8 @@ echo Using SPARK_HOME=$SPARK_HOME
 
 . "${SPARK_HOME}/bin/load-spark-env.sh"
 
-export JAVA_HOME="/opt/jdk1.8.0_72/"                                                                                                                               
-export PATH="$PATH:/opt/jdk1.8.0_72/bin:/opt/jdk1.8.0_72/jre/bin:/opt/hadoop/bin/:/opt/hadoop/sbin/"
+export JAVA_HOME="/opt/jdk1.8.0_161/"                                                                                                                               
+export PATH="$PATH:/opt/jdk1.8.0_161/bin:/opt/jdk1.8.0_161/jre/bin:/opt/hadoop/bin/:/opt/hadoop/sbin/"
 export HADOOP_HOME="/opt/hadoop"
 export PATH="$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$SPARK_HOME/bin:$SPARK_HOME/sbin"
 export HADOOP_CONF_DIR="$HADOOP_HOME/etc/hadoop"
