@@ -18,7 +18,7 @@ export HADOOP_SBIN_DIR="$HADOOP_HOME/sbin"
 export HADOOP_SBIN_DIR="$HADOOP_HOME/bin"
 export HADOOP_CLASSPATH="$HADOOP_HOME/share/hadoop/common/"
 export JAVA_CLASSPATH="$JAVA_HOME/jre/lib/"
-export JAVA_OPTS="-Dsun.security.krb5.debug=true"
+export JAVA_OPTS="-Dsun.security.krb5.debug=true -XX:MetaspaceSize=128M -XX:MaxMetaspaceSize=256M"
 
 rm -rf /opt/hadoop/etc/hadoop/core-site.xml
 
@@ -188,6 +188,8 @@ if [ "$NOTEBOOK_DIR" != "" ]; then
 	#sed "s/#c.NotebookApp.notebook_dir = u.*/c.NotebookApp.notebook_dir = u\'$ESCAPED_NOTEBOOK_DIR\/$SPARK_PUBLIC_DNS\/notebooks\'/" /root/.jupyter/jupyter_notebook_config.py >> /root/.jupyter/jupyter_notebook_config.py.tmp
 	#mv /root/.jupyter/jupyter_notebook_config.py.tmp /root/.jupyter/jupyter_notebook_config.py
 	
+	echo "SPARK_DAEMON_JAVA_OPTS="-XX:MetaspaceSize=128M -XX:MaxMetaspaceSize=256M -XX:-PrintGCTimeStamps -XX:+PrintGCDetails"
+	
 	cp /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-env.sh.template /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-env.sh
 	echo "SPARK_WORKER_DIR=$NOTEBOOK_DIR/$SPARK_PUBLIC_DNS/work" >> /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-env.sh
 	
@@ -266,7 +268,7 @@ if [ "$SPARK_MASTER_URL" == "" ]; then
 	echo "Using SPARK_MASTER_URL=$SPARK_MASTER_URL"
 fi
 
-export SPARK_OPTS="--driver-java-options=-$JAVA_DRIVER_OPTS --driver-java-options=-Dlog4j.logLevel=info --master $SPARK_MASTER_URL --files /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml"
+export SPARK_OPTS="--driver-java-options=-$JAVA_DRIVER_OPTS --driver-java-options=-XX:MetaspaceSize=128M --driver-java-options=-XX:MaxMetaspaceSize=256M --driver-java-options=-Dlog4j.logLevel=info --master $SPARK_MASTER_URL --files /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml"
 
 if [ "$POSTGRES_HOSTNAME" != "" ]; then
 	sed "s/POSTGRES_HOSTNAME/$POSTGRES_HOSTNAME/" /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml >> /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml.tmp && \
