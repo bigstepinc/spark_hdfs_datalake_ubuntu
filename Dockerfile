@@ -196,6 +196,9 @@ RUN cp /opt/spark-2.1.0-bin-hadoop2.7/jars/commons-crypto-1.0.0.jar /opt/hadoop/
  # Get the right Toree Assembly Jar
 RUN wget http://repo.bigstepcloud.com/bigstep/datalab/toree-assembly-0.2.0.dev1-incubating-SNAPSHOT.jar -O /opt/toree-kernel/lib/toree-assembly-0.2.0.dev1-incubating-SNAPSHOT.jar
 
+RUN conda update -y jupyter_core jupyter_client
+RUN cp /opt/conda/envs/python3/lib/libsodium.so.23 /usr/lib/x86_64-linux-gnu/
+
 ADD version.json /opt
 #        SparkMaster  SparkMasterWebUI  SparkWorkerWebUI REST     Jupyter Spark		Thrift
 EXPOSE    7077        8080              8081              6066    8888      4040     88   10000
