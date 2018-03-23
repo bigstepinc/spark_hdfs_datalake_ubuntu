@@ -152,7 +152,7 @@ RUN cd /opt/spark-2.1.0-bin-hadoop2.7/jars/ && wget http://repo.bigstepcloud.com
     wget http://repo.bigstepcloud.com/bigstep/datalab/hive-txn-schema-0.14.0.postgres.sql
 
 RUN add-apt-repository "deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main" && \
-    wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add - 
+    wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - 
 RUN apt-get update -y
 RUN apt-get install -y postgresql-client
 
