@@ -167,6 +167,9 @@ fi
 if [ "$MAX_DYNAMIC_PARTITIONS_PER_NODE" == "" ]; then
   MAX_DYNAMIC_PARTITIONS_PER_NODE=100
 fi
+if [ "$NEW_SIZE_JVM" == "" ]; then
+	NEW_SIZE_JVM=1024
+fi
 
 cp /opt/spark-2.1.0-bin-hadoop2.7/jars/datalake-client-libraries-1.5-SNAPSHOT.jar $HADOOP_HOME/share/hadoop/common/
 cp /opt/spark-2.1.0-bin-hadoop2.7/jars/datalake-client-libraries-1.5-SNAPSHOT.jar $HADOOP_HOME/share/hadoop/common/lib/
@@ -176,9 +179,6 @@ cp /bigstep/kerberos/user.keytab $KEYTAB_PATH_URI
 
 if [ "$NOTEBOOK_DIR" != "" ]; then
 
-	#mkdir $NOTEBOOK_DIR/$SPARK_PUBLIC_DNS/notebooks
-	#cp /user/notebooks/* $NOTEBOOK_DIR/$SPARK_PUBLIC_DNS/notebooks/
-	
 	mkdir $NOTEBOOK_DIR
 	mkdir $NOTEBOOK_DIR/$SPARK_PUBLIC_DNS
 	mkdir $NOTEBOOK_DIR/$SPARK_PUBLIC_DNS/logs
@@ -188,7 +188,7 @@ if [ "$NOTEBOOK_DIR" != "" ]; then
 	#sed "s/#c.NotebookApp.notebook_dir = u.*/c.NotebookApp.notebook_dir = u\'$ESCAPED_NOTEBOOK_DIR\/$SPARK_PUBLIC_DNS\/notebooks\'/" /root/.jupyter/jupyter_notebook_config.py >> /root/.jupyter/jupyter_notebook_config.py.tmp
 	#mv /root/.jupyter/jupyter_notebook_config.py.tmp /root/.jupyter/jupyter_notebook_config.py
 	
-	echo '"SPARK_DAEMON_JAVA_OPTS="-XX:MetaspaceSize=128M -XX:MaxMetaspaceSize=256M -XX:-PrintGCTimeStamps -XX:+PrintGCDetails"' >> /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-env.sh.template
+	echo SPARK_DAEMON_JAVA_OPTS='-XX:MetaspaceSize=128M -XX:MaxMetaspaceSize=256M -XX:-PrintGCTimeStamps -XX:+PrintGCDetails' >> /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-env.sh.template
 	
 	cp /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-env.sh.template /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-env.sh
 	echo "SPARK_WORKER_DIR=$NOTEBOOK_DIR/$SPARK_PUBLIC_DNS/work" >> /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-env.sh
@@ -227,6 +227,10 @@ fi
 
 sed "s/HOSTNAME_MASTER/$SPARK_MASTER_HOSTNAME/" /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf >> /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp && \
 mv /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf
+
+sed "s/NEW_SIZE_JVM/$NEW_SIZE_JVM/" /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf >> /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp && \
+mv /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf
+
 
 sed "s/SPARK_UI_PORT/$SPARK_UI_PORT/" /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf >> /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp && \
 mv /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf
@@ -310,7 +314,6 @@ if [ "$MAX_DYNAMIC_PARTITIONS_PER_NODE" != "" ]; then
 	mv /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml.tmp /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml
 fi
 
-
 export SPARK_POSTGRES_PASSWORD=$(cat $SPARK_SECRETS_PATH/SPARK_POSTGRES_PASSWORD)
 
 sed "s/SPARK_POSTGRES_PASSWORD/$SPARK_POSTGRES_PASSWORD/" /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml >> /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml.tmp && \
@@ -337,9 +340,6 @@ hdfs dfs -mkdir /tmp/hive
 
 #Check if there is no workaround this permissions
 hdfs dfs -chmod -R 777 /tmp/hive
-
-
-
 
 export NOTEBOOK_PASSWORD=$(cat $SPARK_SECRETS_PATH/NOTEBOOK_PASSWORD)
 
@@ -394,17 +394,17 @@ fi
 CLASSPATH=/opt/spark-2.1.0-bin-hadoop2.7/jars/
 
 if [ "$MODE" == "master" ]; then 
-	${SPARK_HOME}/bin/spark-class "org.apache.spark.deploy.master.Master" -h $SPARK_MASTER_HOSTNAME --port $SPARK_MASTER_PORT --webui-port $SPARK_MASTER_WEBUI_PORT &
+	nohup ${SPARK_HOME}/bin/spark-class "org.apache.spark.deploy.master.Master" -h $SPARK_MASTER_HOSTNAME --port $SPARK_MASTER_PORT --webui-port $SPARK_MASTER_WEBUI_PORT &
 	jupyter notebook --ip=0.0.0.0 --log-level DEBUG --allow-root --NotebookApp.iopub_data_rate_limit=10000000000 --Spark.url="http://$SPARK_PUBLIC_DNS:$SPARK_UI_PORT"
 
 elif [ "$MODE" == "worker" ]; then
 	${SPARK_HOME}/bin/spark-class "org.apache.spark.deploy.worker.Worker" --webui-port $SPARK_WORKER_WEBUI_PORT --port $SPARK_WORKER_PORT $SPARK_MASTER_URL -c $CORES -m $MEM -d $NOTEBOOK_DIR/$SPARK_PUBLIC_DNS/work/
 
 elif [ "$MODE" == "thrift" ]; then 
-	${SPARK_HOME}/bin/spark-class "org.apache.spark.deploy.master.Master" -h $SPARK_MASTER_HOSTNAME --port $SPARK_MASTER_PORT --webui-port $SPARK_MASTER_WEBUI_PORT &
+	nohup ${SPARK_HOME}/bin/spark-class "org.apache.spark.deploy.master.Master" -h $SPARK_MASTER_HOSTNAME --port $SPARK_MASTER_PORT --webui-port $SPARK_MASTER_WEBUI_PORT &
 	${SPARK_HOME}/bin/spark-submit --class org.apache.spark.sql.hive.thriftserver.HiveThriftServer2 --name "Thrift JDBC/ODBC Server"  --master $SPARK_MASTER_URL
 else
-	${SPARK_HOME}/bin/spark-class "org.apache.spark.deploy.master.Master" -h $SPARK_MASTER_HOSTNAME --port $SPARK_MASTER_PORT --webui-port $SPARK_MASTER_WEBUI_PORT &
-	${SPARK_HOME}/bin/spark-class "org.apache.spark.deploy.worker.Worker" --webui-port $SPARK_WORKER_WEBUI_PORT --port $SPARK_WORKER_PORT $SPARK_MASTER_URL	-c $CORES -m $MEM -d $NOTEBOOK_DIR/$SPARK_PUBLIC_DNS/work/ &
+	nohup ${SPARK_HOME}/bin/spark-class "org.apache.spark.deploy.master.Master" -h $SPARK_MASTER_HOSTNAME --port $SPARK_MASTER_PORT --webui-port $SPARK_MASTER_WEBUI_PORT &
+	nohup ${SPARK_HOME}/bin/spark-class "org.apache.spark.deploy.worker.Worker" --webui-port $SPARK_WORKER_WEBUI_PORT --port $SPARK_WORKER_PORT $SPARK_MASTER_URL	-c $CORES -m $MEM -d $NOTEBOOK_DIR/$SPARK_PUBLIC_DNS/work/ &
 	jupyter notebook --ip=0.0.0.0 --log-level DEBUG --allow-root --NotebookApp.iopub_data_rate_limit=10000000000 --Spark.url="http://$SPARK_PUBLIC_DNS:$SPARK_UI_PORT"
 fi
