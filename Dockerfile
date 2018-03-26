@@ -113,17 +113,6 @@ COPY kernel.json /opt/conda/share/jupyter/kernels/scala/
 
 RUN cd /root && wget http://central.maven.org/maven2/com/google/collections/google-collections/1.0/google-collections-1.0.jar
 
-#Solution to readline library issues for SparkR context/session
-#These are commented -> TO be enabled if there are problems initializing the sparkr session
-#RUN mv $CONDA_DIR/envs/python3/lib/libreadline.so.6 $CONDA_DIR/envs/python3/lib/libreadline.so.6.tmp && \
-#    ln -s /lib/x86_64-linux-gnu/libreadline.so.6 $CONDA_DIR/envs/python3/lib/libreadline.so.6
-#RUN mv $CONDA_DIR/envs/ir/lib/libreadline.so.6 $CONDA_DIR/envs/ir/lib/libreadline.so.6.tmp && \
-#    ln -s /lib/x86_64-linux-gnu/libreadline.so.6 $CONDA_DIR/envs/ir/lib/libreadline.so.6
-#RUN mv $CONDA_DIR/lib/libreadline.so.6 $CONDA_DIR/lib/libreadline.so.6.tmp && \
-#    ln -s /lib/x86_64-linux-gnu/libreadline.so.6 $CONDA_DIR/lib/libreadline.so.6
-#RUN mv $CONDA_DIR/pkgs/readline-6.2-2/lib/libreadline.so.6 $CONDA_DIR/pkgs/readline-6.2-2/lib/libreadline.so.6.tmp && \
-#    ln -s /lib/x86_64-linux-gnu/libreadline.so.6 $CONDA_DIR/pkgs/readline-6.2-2/lib/libreadline.so.6
-    
 #Add Getting Started Notebooks
 RUN wget http://repo.uk.bigstepcloud.com/bigstep/datalab/datalab_getting_started_in_scala__4.ipynb -O /user/notebooks/DataLab\ Getting\ Started\ in\ Scala.ipynb
 RUN wget http://repo.bigstepcloud.com/bigstep/datalab/DataLab%2BGetting%2BStarted%2Bin%2BR%20%281%29.ipynb -O /user/notebooks/DataLab\ Getting\ Started\ in\ R.ipynb
@@ -159,9 +148,6 @@ RUN apt-get install -y postgresql-client
 # Add Script for hashing password
 ADD password.py /opt
 
-# Download Bigstep Data Lake Client Libraries
-#RUN wget https://github.com/bigstepinc/datalake-client-libraries/releases/download/untagged-9758317a72f268684537/datalake-client-libraries-1.5-SNAPSHOT.jar -P /opt/spark-2.1.0-bin-hadoop2.7/jars/
-#RUN wget https://github.com/bigstepinc/datalake-client-libraries/releases/download/1.5.2/datalake-client-libraries-1.5-SNAPSHOT.jar -P /opt/spark-2.1.0-bin-hadoop2.7/jars/
 # Get Spark Thrift Postgresql connector
 RUN wget https://jdbc.postgresql.org/download/postgresql-9.4.1212.jar -P /opt/spark-2.1.0-bin-hadoop2.7/jars/
 
@@ -185,6 +171,7 @@ RUN cd /tmp && \
     echo -ne "- with sbt $SBT_VERSION\n" >> /root/.built &&\
     git clone https://github.com/apache/incubator-toree.git && \
     cd incubator-toree && \
+    git checkout c064a0d97cb52645cab6f43f874659b0dc1020e9 && \
     make dist SHELL=/bin/bash APACHE_SPARK_VERSION=2.1.0 SCALA_VERSION=2.11 && \
     mv /tmp/incubator-toree/dist/toree /opt/toree-kernel && \
     chmod +x /opt/toree-kernel && \
@@ -194,7 +181,7 @@ RUN cp /opt/spark-2.1.0-bin-hadoop2.7/jars/commons-crypto-1.0.0.jar /opt/hadoop/
 RUN cp /opt/spark-2.1.0-bin-hadoop2.7/jars/commons-crypto-1.0.0.jar /opt/hadoop/share/hadoop/common/lib/
     
  # Get the right Toree Assembly Jar
-RUN wget http://repo.bigstepcloud.com/bigstep/datalab/toree-assembly-0.2.0.dev1-incubating-SNAPSHOT.jar -O /opt/toree-kernel/lib/toree-assembly-0.2.0.dev1-incubating-SNAPSHOT.jar
+#RUN wget http://repo.bigstepcloud.com/bigstep/datalab/toree-assembly-0.2.0.dev1-incubating-SNAPSHOT.jar -O /opt/toree-kernel/lib/toree-assembly-0.2.0.dev1-incubating-SNAPSHOT.jar
 
 RUN conda update -y jupyter_core jupyter_client
 RUN cp /opt/conda/envs/python3/lib/libsodium.so.23 /usr/lib/x86_64-linux-gnu/
