@@ -70,15 +70,9 @@ RUN jupyter nbextension enable --py widgetsnbextension
 RUN pip install lxml
 
 #Install Scala Spark kernel
-ENV SBT_VERSION 0.13.15
+ENV SBT_VERSION 0.13.11
 ENV SBT_HOME /usr/local/sbt
 ENV PATH ${PATH}:${SBT_HOME}/bin
-
-# Install sbt
-RUN wget "http://repo.bigstepcloud.com/bigstep/datalab/sbt-0.13.11.tgz"
-RUN tar -xvf /sbt-0.13.11.tgz 
-RUN mv /sbt /usr/local/ && echo -ne "- with sbt $SBT_VERSION\n" >> /root/.built
-
     
 #Install Python3 packages
 RUN cd /root && $CONDA_DIR/bin/conda install --yes \
@@ -167,7 +161,7 @@ ADD spark-daemon.sh /opt/spark-2.1.0-bin-hadoop2.7/sbin/spark-daemon.sh
 ADD log4j.properties /opt/spark-2.1.0-bin-hadoop2.7/conf/log4j.properties
 
 RUN cd /tmp && \
-    curl -sL "http://dl.bintray.com/sbt/native-packages/sbt/$SBT_VERSION/sbt-$SBT_VERSION.tgz" | gunzip | tar -x -C /usr/local && \
+    wget "http://repo.bigstepcloud.com/bigstep/datalab/sbt-0.13.11.tgz" | gunzip | tar -x -C /usr/local && \
     echo -ne "- with sbt $SBT_VERSION\n" >> /root/.built &&\
     git clone https://github.com/apache/incubator-toree.git && \
     cd incubator-toree && \
