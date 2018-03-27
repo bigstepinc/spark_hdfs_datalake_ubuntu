@@ -23,6 +23,7 @@ export JAVA_OPTS="-Dsun.security.krb5.debug=true -XX:MetaspaceSize=128M -XX:MaxM
 rm -rf /opt/hadoop/etc/hadoop/core-site.xml
 
 cp /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.template /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf
+cp /opt/hadoop/share/hadoop/common/hadoop-common-2.7.5.jar /opt/spark-2.1.0-bin-hadoop2.7/jars/
 
 if [ "$HDFS_MASTER" != "" ]; then
 	sed "s/HOSTNAME/$HDFS_MASTER/" /opt/hadoop/etc/hadoop/core-site.xml.template >> /opt/hadoop/etc/hadoop/core-site.xml
