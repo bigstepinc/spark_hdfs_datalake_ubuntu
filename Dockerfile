@@ -161,8 +161,9 @@ ADD spark-daemon.sh /opt/spark-2.1.0-bin-hadoop2.7/sbin/spark-daemon.sh
 ADD log4j.properties /opt/spark-2.1.0-bin-hadoop2.7/conf/log4j.properties
 
 RUN cd /tmp && \
-    wget "http://repo.bigstepcloud.com/bigstep/datalab/sbt-0.13.11.tgz" | gunzip | tar -x -C /usr/local && \
-    echo -ne "- with sbt $SBT_VERSION\n" >> /root/.built &&\
+    wget "http://repo.bigstepcloud.com/bigstep/datalab/sbt-0.13.11.tgz" -O /tmp/sbt-0.13.11.tgz && \
+    tar -xvf /tmp/sbt-0.13.11.tgz -C /usr/local && \
+    echo -ne "- with sbt $SBT_VERSION\n" >> /root/.built && \
     git clone https://github.com/apache/incubator-toree.git && \
     cd incubator-toree && \
     git checkout c064a0d97cb52645cab6f43f874659b0dc1020e9 && \
