@@ -185,13 +185,14 @@ ADD spark-daemon.sh $SPARK_HOME/sbin/spark-daemon.sh
 #Overwrite log4j properties file
 ADD log4j.properties $SPARK_HOME/conf/log4j.properties
 
-#RUN cd /tmp && \
-#    curl -sL "http://dl.bintray.com/sbt/native-packages/sbt/$SBT_VERSION/sbt-$SBT_VERSION.tgz" | gunzip | tar -x -C /usr/local && \
-#    echo -ne "- with sbt $SBT_VERSION\n" >> /root/.built &&\
 RUN cd /tmp && \
+    wget "http://repo.bigstepcloud.com/bigstep/datalab/sbt-0.13.11.tgz" -O /tmp/sbt-0.13.11.tgz && \
+    tar -xvf /tmp/sbt-0.13.11.tgz -C /usr/local && \
+    echo -ne "- with sbt $SBT_VERSION\n" >> /root/.built && \
     git clone https://github.com/apache/incubator-toree.git && \
     cd incubator-toree && \
-  #  make dist SHELL=/bin/bash APACHE_SPARK_VERSION=2.1.0 SCALA_VERSION=2.11 && \
+    git checkout c064a0d97cb52645cab6f43f874659b0dc1020e9 && \
+    make dist SHELL=/bin/bash APACHE_SPARK_VERSION=2.1.0 SCALA_VERSION=2.11 && \
     mv /tmp/incubator-toree/dist/toree /opt/toree-kernel && \
     chmod +x /opt/toree-kernel && \
     rm -rf /tmp/incubator-toree 
