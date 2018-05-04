@@ -35,11 +35,6 @@
 <value>integration.bigstepcloud.com</value>
 </property>
 
-<property>
-<name>fs.dl.impl.kerberosRealm</name>
-<value>integration.bigstepcloud.com</value>
-</property>
-
 <!-- optional -->
 <property>
 <name>fs.dl.impl.defaultFilePermissions</name>
