@@ -35,11 +35,6 @@
 <value>bigstep.io</value>
 </property>
 
-<property>
-<name>fs.dl.impl.kerberosRealm</name>
-<value>bigstep.io</value>
-</property>
-
 <!-- optional -->
 <property>
 <name>fs.dl.impl.defaultFilePermissions</name>
