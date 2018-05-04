@@ -19,6 +19,8 @@ ADD krb5.conf /etc/
 ENV JAVA_HOME /opt/jdk1.8.0_171
 ENV PATH $PATH:/opt/jdk1.8.0_171/bin:/opt/jdk1.8.0_171/jre/bin:/etc/alternatives:/var/lib/dpkg/alternatives
 
+RUN apt-get -qq update -y
+RUN apt-get install -y unzip wget curl
 
 RUN cd /opt && wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u171-b11/512cd62ec5174c3487ac17c61aaa89e8/jdk-8u171-linux-x64.tar.gz" &&\
    tar xzf jdk-8u171-linux-x64.tar.gz && rm -rf jdk-8u171-linux-x64.tar.gz
@@ -30,7 +32,6 @@ RUN echo 'export JAVA_HOME="/opt/jdk1.8.0_171"' >> ~/.bashrc && \
     
 #Add Java Security Policies
 RUN curl -L -C - -b "oraclelicense=accept-securebackup-cookie" -O http://download.oracle.com/otn-pub/java/jce/8/jce_policy-8.zip
-RUN apt-get install -y unzip
 RUN unzip jce_policy-8.zip
 RUN cp UnlimitedJCEPolicyJDK8/US_export_policy.jar /opt/jdk1.8.0_171/jre/lib/security/ && cp UnlimitedJCEPolicyJDK8/local_policy.jar /opt/jdk1.8.0_171/jre/lib/security/
 RUN rm -rf UnlimitedJCEPolicyJDK8
