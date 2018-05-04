@@ -47,7 +47,7 @@ ENV R_LIBS_USER $SPARK_HOME/R/lib:/opt/conda/envs/ir/lib/R/library:/opt/conda/li
 ENV PYTHONPATH $SPARK_HOME/python:$SPARK_HOME/python/lib/py4j-0.8.2.1-src.zip
 
 # Create additional files in the DataLake
-RUN mv /spark-2.3.0-bin-hadoop2.7 /opt/ 
+#RUN mv /spark-2.3.0-bin-hadoop2.7 /opt/ 
 RUN mkdir -p /user && mkdir -p /user/notebooks && mkdir -p /user/datasets
 
 
