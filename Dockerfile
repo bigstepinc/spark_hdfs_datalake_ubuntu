@@ -163,7 +163,7 @@ RUN cd $SPARK_HOME/jars/ && wget http://repo.bigstepcloud.com/bigstep/datalab/hi
 
 # Setup PostgreSQL connection prerequisites
 RUN add-apt-repository "deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main" && \
-    wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add - 
+    wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - 
 RUN apt-get update -y
 RUN apt-get install -y postgresql-client
 
