@@ -8,31 +8,31 @@ ADD version.json /opt
 
 ADD core-site.xml.datalake /opt/spark-2.3.0-bin-hadoop2.7/conf/
 ADD core-site.xml.datalake.integration /opt/spark-2.3.0-bin-hadoop2.7/conf/
-ADD spark-defaults.conf /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.template
-ADD hive-site.xml /opt/spark-2.1.0-bin-hadoop2.7/conf/
+ADD spark-defaults.conf /opt/spark-2.3.0-bin-hadoop2.7/conf/spark-defaults.conf.template
+ADD hive-site.xml /opt/spark-2.3.0-bin-hadoop2.7/conf/
 
 ADD krb5.conf.integration /etc/
 ADD krb5.conf /etc/
 
 
 # Install Java 8
-ENV JAVA_HOME /opt/jdk1.8.0_161
-ENV PATH $PATH:/opt/jdk1.8.0_161/bin:/opt/jdk1.8.0_161/jre/bin:/etc/alternatives:/var/lib/dpkg/alternatives
+ENV JAVA_HOME /opt/jdk1.8.0_171
+ENV PATH $PATH:/opt/jdk1.8.0_171/bin:/opt/jdk1.8.0_171/jre/bin:/etc/alternatives:/var/lib/dpkg/alternatives
 
 
-RUN cd /opt && wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u161-b12/2f38c3b165be4555a1fa6e98c45e0808/jdk-8u161-linux-x64.tar.gz" &&\
-   tar xzf jdk-8u161-linux-x64.tar.gz && rm -rf jdk-8u161-linux-x64.tar.gz
+RUN cd /opt && wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u171-b11/512cd62ec5174c3487ac17c61aaa89e8/jdk-8u171-linux-x64.tar.gz" &&\
+   tar xzf jdk-8u171-linux-x64.tar.gz && rm -rf jdk-8u171-linux-x64.tar.gz
 
 
-RUN echo 'export JAVA_HOME="/opt/jdk1.8.0_161"' >> ~/.bashrc && \
-    echo 'export PATH="$PATH:/opt/jdk1.8.0_161/bin:/opt/jdk1.8.0_161/jre/bin"' >> ~/.bashrc && \
-    bash ~/.bashrc && cd /opt/jdk1.8.0_161/ && update-alternatives --install /usr/bin/java java /opt/jdk1.8.0_161/bin/java 1
+RUN echo 'export JAVA_HOME="/opt/jdk1.8.0_171"' >> ~/.bashrc && \
+    echo 'export PATH="$PATH:/opt/jdk1.8.0_171/bin:/opt/jdk1.8.0_171/jre/bin"' >> ~/.bashrc && \
+    bash ~/.bashrc && cd /opt/jdk1.8.0_171/ && update-alternatives --install /usr/bin/java java /opt/jdk1.8.0_171/bin/java 1
     
 #Add Java Security Policies
 RUN curl -L -C - -b "oraclelicense=accept-securebackup-cookie" -O http://download.oracle.com/otn-pub/java/jce/8/jce_policy-8.zip
 RUN apt-get install -y unzip
 RUN unzip jce_policy-8.zip
-RUN cp UnlimitedJCEPolicyJDK8/US_export_policy.jar /opt/jdk1.8.0_161/jre/lib/security/ && cp UnlimitedJCEPolicyJDK8/local_policy.jar /opt/jdk1.8.0_161/jre/lib/security/
+RUN cp UnlimitedJCEPolicyJDK8/US_export_policy.jar /opt/jdk1.8.0_171/jre/lib/security/ && cp UnlimitedJCEPolicyJDK8/local_policy.jar /opt/jdk1.8.0_171/jre/lib/security/
 RUN rm -rf UnlimitedJCEPolicyJDK8
 
 # Install Spark 2.3.0
