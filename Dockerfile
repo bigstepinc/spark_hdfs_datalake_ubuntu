@@ -20,7 +20,7 @@ ENV JAVA_HOME /opt/jdk1.8.0_171
 ENV PATH $PATH:/opt/jdk1.8.0_171/bin:/opt/jdk1.8.0_171/jre/bin:/etc/alternatives:/var/lib/dpkg/alternatives
 
 RUN apt-get -qq update -y
-RUN apt-get install -y unzip wget curl tar bzip2
+RUN apt-get install -y unzip wget curl tar bzip2 software-properties-common
 
 RUN cd /opt && wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u171-b11/512cd62ec5174c3487ac17c61aaa89e8/jdk-8u171-linux-x64.tar.gz" &&\
    tar xzf jdk-8u171-linux-x64.tar.gz && rm -rf jdk-8u171-linux-x64.tar.gz
