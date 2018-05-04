@@ -66,7 +66,7 @@ RUN cd /opt && \
     /bin/bash Miniconda2-latest-Linux-x86_64.sh  -b -p $CONDA_DIR && \
      rm -rf  Miniconda2-latest-Linux-x86_64.sh
 
-RUN export PATH=$PATH:/$CONDA_DIR/bin
+RUN export PATH=$PATH:$CONDA_DIR/bin
 
 # Install Jupyter notebook 
 RUN $CONDA_DIR/bin/conda install --yes \
