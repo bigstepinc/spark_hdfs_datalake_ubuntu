@@ -31,15 +31,15 @@ RUN echo 'export JAVA_HOME="/opt/jdk1.8.0_171"' >> ~/.bashrc && \
     bash ~/.bashrc && cd /opt/jdk1.8.0_171/ && update-alternatives --install /usr/bin/java java /opt/jdk1.8.0_171/bin/java 1
     
 #Add Java Security Policies
-RUN curl -L -C - -b "oraclelicense=accept-securebackup-cookie" -O http://download.oracle.com/otn-pub/java/jce/8/jce_policy-8.zip
-RUN unzip jce_policy-8.zip
+RUN curl -L -C - -b "oraclelicense=accept-securebackup-cookie" -O http://download.oracle.com/otn-pub/java/jce/8/jce_policy-8.zip && \
+   unzip jce_policy-8.zip
 RUN cp UnlimitedJCEPolicyJDK8/US_export_policy.jar /opt/jdk1.8.0_171/jre/lib/security/ && cp UnlimitedJCEPolicyJDK8/local_policy.jar /opt/jdk1.8.0_171/jre/lib/security/
 RUN rm -rf UnlimitedJCEPolicyJDK8
 
 # Install Spark 2.3.0
-RUN cd /opt && wget https://www.apache.org/dyn/closer.lua/spark/spark-2.3.0/spark-2.3.0-bin-hadoop2.7.tgz
-RUN tar xzvf /opt/spark-2.3.0-bin-hadoop2.7.tgz
-RUN rm  /opt/spark-2.3.0-bin-hadoop2.7.tgz
+RUN cd /opt && wget http://apache.javapipe.com/spark/spark-2.3.0/spark-2.3.0-bin-hadoop2.7.tgz && \
+   tar xzvf /opt/spark-2.3.0-bin-hadoop2.7.tgz && \
+   rm  /opt/spark-2.3.0-bin-hadoop2.7.tgz 
 
 # Spark pointers for Jupyter Notebook
 ENV SPARK_HOME /opt/spark-2.3.0-bin-hadoop2.7
