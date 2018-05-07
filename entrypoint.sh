@@ -313,7 +313,7 @@ cd $SPARK_HOME/jars
 
 export PGPASSWORD=$SPARK_POSTGRES_PASSWORD
 
-psql -h $POSTGRES_HOSTNAME -p $POSTGRES_PORT  -U  $SPARK_POSTGRES_USER -d $SPARK_POSTGRES_DB -f /opt/spark-2.1.0-bin-hadoop2.7/jars/hive-schema-1.2.0.postgres.sql
+psql -h $POSTGRES_HOSTNAME -p $POSTGRES_PORT  -U  $SPARK_POSTGRES_USER -d $SPARK_POSTGRES_DB -f /opt/spark-2.3.0-bin-hadoop2.7/jars/hive-schema-1.2.0.postgres.sql
 
 #hdfs dfs -mkdir /tmp
 #hdfs dfs -mkdir /tmp/hive 
