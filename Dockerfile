@@ -141,9 +141,7 @@ RUN wget http://repo.uk.bigstepcloud.com/bigstep/datalab/datalab_getting_started
    wget https://jdbc.postgresql.org/download/postgresql-9.4.1212.jar -P $SPARK_HOME/jars/ && \
    wget http://central.maven.org/maven2/org/apache/spark/spark-streaming-kafka-0-10_2.11/2.3.0/spark-streaming-kafka-0-10_2.11-2.3.0.jar -P $SPARK_HOME/jars/ && \
    wget http://central.maven.org/maven2/org/apache/spark/spark-sql-kafka-0-10_2.11/2.3.0/spark-sql-kafka-0-10_2.11-2.3.0.jar -P $SPARK_HOME/jars/ && \
-   cp $SPARK_HOME/examples/jars/spark-examples_2.11-2.3.0.jar $SPARK_HOME/jars/spark-examples_2.11-2.3.0.jar && \
-   wget http://repo.bigstepcloud.com/bigstep/datalab/toree-assembly-0.3.0.dev1-incubating-SNAPSHOT.jar -O /opt/toree-kernel/lib/toree-assembly-0.3.0.dev1-incubating-SNAPSHOT.jar
-
+   cp $SPARK_HOME/examples/jars/spark-examples_2.11-2.3.0.jar $SPARK_HOME/jars/spark-examples_2.11-2.3.0.jar 
 
 # Setup PostgreSQL connection prerequisites and add libraries for the R environment
 RUN apt-get update -y
@@ -179,7 +177,9 @@ RUN cd /tmp && \
     make dist SHELL=/bin/bash APACHE_SPARK_VERSION=2.3.0 SCALA_VERSION=2.11 && \
     mv /tmp/incubator-toree/dist/toree /opt/toree-kernel && \
     chmod +x /opt/toree-kernel && \
-    rm -rf /tmp/incubator-toree 
+    rm -rf /tmp/incubator-toree && \
+    wget http://repo.bigstepcloud.com/bigstep/datalab/toree-assembly-0.3.0.dev1-incubating-SNAPSHOT.jar -O /opt/toree-kernel/lib/toree-assembly-0.3.0.dev1-incubating-SNAPSHOT.jar
+
     
 ##RUN cp $SPARK_HOME/jars/commons-crypto-1.0.0.jar /opt/hadoop/share/hadoop/common/
 ##RUN cp $SPARK_HOME/jars/commons-crypto-1.0.0.jar /opt/hadoop/share/hadoop/common/lib/
