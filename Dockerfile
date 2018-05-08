@@ -70,7 +70,7 @@ RUN $CONDA_DIR/bin/python -m nb_conda_kernels.install --disable --prefix=$CONDA_
     $CONDA_DIR/bin/conda clean -yt
     
 #Add Spark progress bar extension and presentation extensions    
-RUN pip install nbpresent jupyter-spark lxml
+RUN pip install nbpresent jupyter-spark lxml && \
    jupyter nbextension install nbpresent --py --overwrite && \
    jupyter-nbextension enable nb_conda --py --sys-prefix && \
    jupyter-serverextension enable nb_conda --py --sys-prefix && \
