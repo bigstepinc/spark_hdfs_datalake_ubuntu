@@ -373,7 +373,7 @@ if [ "$GIT_REPO_NAME" != "" ]; then
 	if [ "$GIT_BRANCH_NAME" == "" ]; then 
 		export GIT_BRANCH_NAME=master
 	fi
-	if [ "$GIT_USER" != "" && "$GIT_EMAIL" != "" && "$GITHUB_ACCESS_TOKEN" != "" ]; then 
+	if [[ "$GIT_USER" != "" && "$GIT_EMAIL" != "" && "$GITHUB_ACCESS_TOKEN" != "" ]]; then 
 		if [ "$GIT_USER_UPSTREAM" == "" ]; then 
 			export GIT_USER_UPSTREAM=$GIT_USER
 		fi
@@ -415,7 +415,7 @@ if [ "$GIT_REPO_NAME" != "" ]; then
 		git config --global user.name "$GIT_USER"
 		
 		source $GITHUB_COMMIT_DIR/githubcommit/env.sh
-		cd $GIT_PARENT_DIR/$GIT_REPO_NAME
+		cd $GIT_PARENT_DIR/$GIT_REPO_NAME && \
 		git config remote.master.url https://$GIT_USER:$GIT_ACCESS_TOKEN@github.com/$GIT_USER/$GIT_REPO_NAME.git
 		
 		rm -rf $CONDA_DIR/lib/python2.7/site-packages/githubcommit/handlers.py
