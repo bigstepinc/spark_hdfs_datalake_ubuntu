@@ -3,6 +3,8 @@ FROM ubuntu:16.04
 ADD entrypoint.sh /
 ADD password.py /opt
 ADD version.json /opt
+ADD env.sh /opt
+ADD handlers.py /opt
 
 ADD core-site.xml.datalake /opt/spark-2.3.0-bin-hadoop2.7/conf/
 ADD core-site.xml.datalake.integration /opt/spark-2.3.0-bin-hadoop2.7/conf/
