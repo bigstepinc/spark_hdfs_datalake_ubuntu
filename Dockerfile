@@ -180,8 +180,12 @@ RUN cd /tmp && \
     mv /tmp/incubator-toree/dist/toree /opt/toree-kernel && \
     chmod +x /opt/toree-kernel && \
     rm -rf /tmp/incubator-toree && \
-    wget http://repo.bigstepcloud.com/bigstep/datalab/toree-assembly-0.3.0.dev1-incubating-SNAPSHOT.jar -O /opt/toree-kernel/lib/toree-assembly-0.3.0.dev1-incubating-SNAPSHOT.jar
-
+    wget http://repo.bigstepcloud.com/bigstep/datalab/toree-assembly-0.3.0.dev1-incubating-SNAPSHOT.jar -O /opt/toree-kernel/lib/toree-assembly-0.3.0.dev1-incubating-SNAPSHOT.jar && \
+    mkdir /opt/client-libraries && \
+    wget https://github.com/bigstepinc/datalake-client-libraries/archive/untagged-f226f24f5fd0feabde54.tar.gz && \
+    tar xzvf untagged-f226f24f5fd0feabde54.tar.gz && \
+    rm -rf untagged-f226f24f5fd0feabde54.tar.gz && \
+    export PATH=$PATH:/opt/client-libraries/datalake-client-libraries-untagged-f226f24f5fd0feabde54/src/bin/dl
     
 ##RUN cp $SPARK_HOME/jars/commons-crypto-1.0.0.jar /opt/hadoop/share/hadoop/common/
 ##RUN cp $SPARK_HOME/jars/commons-crypto-1.0.0.jar /opt/hadoop/share/hadoop/common/lib/
