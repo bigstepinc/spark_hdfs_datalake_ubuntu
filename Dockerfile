@@ -182,6 +182,7 @@ RUN cd /tmp && \
     rm -rf /tmp/incubator-toree && \
     wget http://repo.bigstepcloud.com/bigstep/datalab/toree-assembly-0.3.0.dev1-incubating-SNAPSHOT.jar -O /opt/toree-kernel/lib/toree-assembly-0.3.0.dev1-incubating-SNAPSHOT.jar && \
     mkdir /opt/client-libraries && \
+    cd /opt/client-libraries && \
     wget https://github.com/bigstepinc/datalake-client-libraries/archive/untagged-f226f24f5fd0feabde54.tar.gz && \
     tar xzvf untagged-f226f24f5fd0feabde54.tar.gz && \
     rm -rf untagged-f226f24f5fd0feabde54.tar.gz && \
