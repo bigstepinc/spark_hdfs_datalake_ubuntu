@@ -22,14 +22,7 @@ export HADOOP_CONF_DIR="$SPARK_HOME/conf"
 export JAVA_CLASSPATH="$JAVA_HOME/jre/lib/"
 export JAVA_OPTS="-Dsun.security.krb5.debug=true -XX:MetaspaceSize=128M -XX:MaxMetaspaceSize=256M"
 
-#rm -rf /opt/hadoop/etc/hadoop/core-site.xml
-
-cp $SPARK_HOME/conf/spark-defaults.conf.template $SPARK_HOME/conf/spark-defaults.conf
 cp /opt/hadoop/share/hadoop/common/hadoop-common-2.7.5.jar /opt/spark-2.3.0-bin-hadoop2.7/jars/
-
-#if [ "$HDFS_MASTER" != "" ]; then
-#	sed "s/HOSTNAME/$HDFS_MASTER/" /opt/hadoop/etc/hadoop/core-site.xml.template >> /opt/hadoop/etc/hadoop/core-site.xml
-#else 
 
 mv $SPARK_HOME/conf/core-site.xml.datalake $SPARK_HOME/conf/core-site.xml
 
@@ -66,7 +59,6 @@ if [ "$ENCRYPTION" != "" ]; then
 fi
 
 if [ "$SPARK_WAREHOUSE_DIR" != "" ]; then
-	#rm /opt/spark-2.1.0-bin-hadoop2.7/conf/core-site.xml
 	echo "spark.sql.warehouse.dir=$SPARK_WAREHOUSE_DIR" >> $SPARK_HOME/conf/spark-defaults.conf
 fi
 
@@ -157,9 +149,6 @@ if [ "$NEW_SIZE_JVM" == "" ]; then
 	NEW_SIZE_JVM=1024
 fi
 
-#cp /opt/spark-2.1.0-bin-hadoop2.7/jars/datalake-client-libraries-1.5-SNAPSHOT.jar $HADOOP_HOME/share/hadoop/common/
-#cp /opt/spark-2.1.0-bin-hadoop2.7/jars/datalake-client-libraries-1.5-SNAPSHOT.jar $HADOOP_HOME/share/hadoop/common/lib/
-#cp /opt/spark-2.1.0-bin-hadoop2.7/jars/datalake-client-libraries-1.5-SNAPSHOT.jar $HADOOP_HOME/share/hadoop/common/hdfs/
 cp /root/google-collections-1.0.jar $SPARK_HOME/jars/
 cp /bigstep/kerberos/user.keytab $KEYTAB_PATH_URI
 
@@ -216,8 +205,8 @@ sed "s/SPARK_UI_PORT/$SPARK_UI_PORT/" $SPARK_HOME/conf/spark-defaults.conf >> $S
 mv $SPARK_HOME/conf/spark-defaults.conf.tmp $SPARK_HOME/conf/spark-defaults.conf
 
 #Disable AnacondaCloud extension
-sed "s/\"nb_anacondacloud\": true/\"nb_anacondacloud\": false/" /root/.jupyter/jupyter_notebook_config.py >> /root/.jupyter/jupyter_notebook_config.py.tmp 
-mv /root/.jupyter/jupyter_notebook_config.py.tmp /root/.jupyter/jupyter_notebook_config.json
+#sed "s/\"nb_anacondacloud\": true/\"nb_anacondacloud\": false/" /root/.jupyter/jupyter_notebook_config.py >> /root/.jupyter/jupyter_notebook_config.py.tmp 
+#mv /root/.jupyter/jupyter_notebook_config.py.tmp /root/.jupyter/jupyter_notebook_config.py
 
 #sed "s/\"nb_anacondacloud\": true/\"nb_anacondacloud\": false/" /opt/conda/etc/jupyter/jupyter_notebook_config.json >> /opt/conda/etc/jupyter/jupyter_notebook_config.json.tmp
 #mv /opt/conda/etc/jupyter/jupyter_notebook_config.json.tmp /opt/conda/etc/jupyter/jupyter_notebook_config.json
@@ -234,18 +223,20 @@ mv /root/.jupyter/jupyter_notebook_config.py.tmp /root/.jupyter/jupyter_notebook
 #sed "s/\"nb_anacondacloud\/main\": true/\"nb_anacondacloud\/main\": false/" /opt/conda/etc/jupyter/nbconfig/notebook.json >> /opt/conda/etc/jupyter/nbconfig/notebook.json.tmp
 #mv /opt/conda/etc/jupyter/nbconfig/notebook.json.tmp /opt/conda/etc/jupyter/nbconfig/notebook.json
 
-# Change the Home Icon 
-sed "s/<i class=\"fa fa-home\"><\/i>/\/user/" /opt/conda/envs/python3/lib/python3.5/site-packages/notebook/templates/tree.html >> /opt/conda/envs/python3/lib/python3.5/site-packages/notebook/templates/tree.html.tmp
-mv /opt/conda/envs/python3/lib/python3.5/site-packages/notebook/templates/tree.html.tmp /opt/conda/envs/python3/lib/python3.5/site-packages/notebook/templates/tree.html
+if [ "$MODE" == "master" ]; then 
+	# Change the Home Icon 
+	sed "s/<i class=\"fa fa-home\"><\/i>/\/user/" /opt/conda/envs/python3/lib/python3.5/site-packages/notebook/templates/tree.html >> /opt/conda/envs/python3/lib/python3.5/site-packages/notebook/templates/tree.html.tmp
+	mv /opt/conda/envs/python3/lib/python3.5/site-packages/notebook/templates/tree.html.tmp /opt/conda/envs/python3/lib/python3.5/site-packages/notebook/templates/tree.html
 
-sed "s/<i class=\"fa fa-home\"><\/i>/\/user/" /opt/conda/lib/python2.7/site-packages/notebook/templates/tree.html >> /opt/conda/lib/python2.7/site-packages/notebook/templates/tree.html.tmp
-mv /opt/conda/lib/python2.7/site-packages/notebook/templates/tree.html.tmp /opt/conda/lib/python2.7/site-packages/notebook/templates/tree.html
+	sed "s/<i class=\"fa fa-home\"><\/i>/\/user/" /opt/conda/lib/python2.7/site-packages/notebook/templates/tree.html >> /opt/conda/lib/python2.7/site-packages/notebook/templates/tree.html.tmp
+	mv /opt/conda/lib/python2.7/site-packages/notebook/templates/tree.html.tmp /opt/conda/lib/python2.7/site-packages/notebook/templates/tree.html
 
-#sed "s/<i class=\"fa fa-home\"><\/i>/\/user/" /opt/conda/pkgs/notebook-4.2.3-py27_0/lib/python2.7/site-packages/notebook/templates/tree.html >> /opt/conda/pkgs/notebook-4.2.3-py27_0/lib/python2.7/site-packages/notebook/templates/tree.html.tmp
-#mv /opt/conda/pkgs/notebook-4.2.3-py27_0/lib/python2.7/site-packages/notebook/templates/tree.html.tmp /opt/conda/pkgs/notebook-4.2.3-py27_0/lib/python2.7/site-packages/notebook/templates/tree.html
+	#sed "s/<i class=\"fa fa-home\"><\/i>/\/user/" /opt/conda/pkgs/notebook-4.2.3-py27_0/lib/python2.7/site-packages/notebook/templates/tree.html >> /opt/conda/pkgs/notebook-4.2.3-py27_0/lib/python2.7/site-packages/notebook/templates/tree.html.tmp
+	#mv /opt/conda/pkgs/notebook-4.2.3-py27_0/lib/python2.7/site-packages/notebook/templates/tree.html.tmp /opt/conda/pkgs/notebook-4.2.3-py27_0/lib/python2.7/site-packages/notebook/templates/tree.html
 
-#sed "s/<i class=\"fa fa-home\"><\/i>/\/user/" /opt/conda/pkgs/notebook-4.2.3-py35_0/lib/python3.5/site-packages/notebook/templates/tree.html >> /opt/conda/pkgs/notebook-4.2.3-py35_0/lib/python3.5/site-packages/notebook/templates/tree.html.tmp
-#mv /opt/conda/pkgs/notebook-4.2.3-py35_0/lib/python3.5/site-packages/notebook/templates/tree.html.tmp /opt/conda/pkgs/notebook-4.2.3-py35_0/lib/python3.5/site-packages/notebook/templates/tree.html    
+	#sed "s/<i class=\"fa fa-home\"><\/i>/\/user/" /opt/conda/pkgs/notebook-4.2.3-py35_0/lib/python3.5/site-packages/notebook/templates/tree.html >> /opt/conda/pkgs/notebook-4.2.3-py35_0/lib/python3.5/site-packages/notebook/templates/tree.html.tmp
+	#mv /opt/conda/pkgs/notebook-4.2.3-py35_0/lib/python3.5/site-packages/notebook/templates/tree.html.tmp /opt/conda/pkgs/notebook-4.2.3-py35_0/lib/python3.5/site-packages/notebook/templates/tree.html    
+fi
 
 if [ "$SPARK_MASTER_URL" == "" ]; then 
 	SPARK_MASTER_URL="spark://$SPARK_MASTER_HOSTNAME:$SPARK_MASTER_PORT"
@@ -276,7 +267,7 @@ fi
 
 if [ "$DYNAMIC_PARTITION_VALUE" != "" ]; then
 	sed "s/DYNAMIC_PARTITION_VALUE/$DYNAMIC_PARTITION_VALUE/" $SPARK_HOME/conf/hive-site.xml >> $SPARK_HOME/conf/hive-site.xml.tmp && \
-	mv $SPARK_HOME/conf/hive-site.xml.tmp $SPARK_HOME/conf/conf/hive-site.xml
+	mv $SPARK_HOME/conf/hive-site.xml.tmp $SPARK_HOME/conf/hive-site.xml
 fi
 
 if [ "$DYNAMIC_PARTITION_MODE" != "" ]; then
@@ -298,7 +289,6 @@ export SPARK_POSTGRES_PASSWORD=$(cat $SPARK_SECRETS_PATH/SPARK_POSTGRES_PASSWORD
 
 sed "s/SPARK_POSTGRES_PASSWORD/$SPARK_POSTGRES_PASSWORD/" $SPARK_HOME/conf/hive-site.xml >> $SPARK_HOME/conf/hive-site.xml.tmp && \
 mv $SPARK_HOME/conf/hive-site.xml.tmp $SPARK_HOME/conf/hive-site.xml
-#cp $SPARK_HOME/conf/hive-site.xml /opt/hadoop/etc/hadoop/
 
 export POSTGRES_PASSWORD=$(cat $SPARK_SECRETS_PATH/POSTGRES_PASSWORD)
 export PGPASSWORD=$POSTGRES_PASSWORD 
@@ -321,11 +311,13 @@ psql -h $POSTGRES_HOSTNAME -p $POSTGRES_PORT  -U  $SPARK_POSTGRES_USER -d $SPARK
 #Check if there is no workaround this permissions
 #hdfs dfs -chmod -R 777 /tmp/hive
 
-export NOTEBOOK_PASSWORD=$(cat $SPARK_SECRETS_PATH/NOTEBOOK_PASSWORD)
+if [ "$MODE" == "master" ]; then 
+	export NOTEBOOK_PASSWORD=$(cat $SPARK_SECRETS_PATH/NOTEBOOK_PASSWORD)
 
-pass=$(python /opt/password.py  $NOTEBOOK_PASSWORD)
-sed "s/#c.NotebookApp.password = u.*/c.NotebookApp.password = u\'$pass\'/" /root/.jupyter/jupyter_notebook_config.py >> /root/.jupyter/jupyter_notebook_config.py.tmp && \
-mv /root/.jupyter/jupyter_notebook_config.py.tmp /root/.jupyter/jupyter_notebook_config.py
+	pass=$(python /opt/password.py  $NOTEBOOK_PASSWORD)
+	sed "s/#c.NotebookApp.password = u.*/c.NotebookApp.password = u\'$pass\'/" /root/.jupyter/jupyter_notebook_config.py >> /root/.jupyter/jupyter_notebook_config.py.tmp && \
+	mv /root/.jupyter/jupyter_notebook_config.py.tmp /root/.jupyter/jupyter_notebook_config.py
+fi
 
 if [ "$EX_MEM" != "" ]; then
 	sed "s/EX_MEM/$EX_MEM/" $SPARK_HOME/conf/spark-defaults.conf >> $SPARK_HOME/conf/spark-defaults.conf.tmp && \
@@ -363,86 +355,93 @@ if [ "$SPARK_HEARTBEAT" != "" ]; then
 	mv $SPARK_HOME/conf/spark-defaults.conf.tmp $SPARK_HOME/conf/spark-defaults.conf
 fi
 
-if [ "$GIT_REPO_NAME" != "" ]; then
-	if [ "$GITHUB_COMMIT_DIR" == "" ]; then 
-		export GITHUB_COMMIT_DIR=/opt
-	fi
-	if [ "$GIT_PARENT_DIR" == "" ]; then 
-		export GIT_PARENT_DIR=$PERSISTENT_NB_DIR
-	fi
-	if [ "$GIT_BRANCH_NAME" == "" ]; then 
-		export GIT_BRANCH_NAME=master
-	fi
-	if [[ "$GIT_USER" != "" && "$GIT_EMAIL" != "" && "$GITHUB_ACCESS_TOKEN" != "" ]]; then 
-		if [ "$GIT_USER_UPSTREAM" == "" ]; then 
-			export GIT_USER_UPSTREAM=$GIT_USER
+if [ "$MODE" == "master" ]; then 
+	if [ "$GIT_REPO_NAME" != "" ]; then
+		if [ "$GITHUB_COMMIT_DIR" == "" ]; then 
+			export GITHUB_COMMIT_DIR=/opt
 		fi
+		if [ "$GIT_PARENT_DIR" == "" ]; then 
+			export GIT_PARENT_DIR=$PERSISTENT_NB_DIR
+		fi
+		if [ "$GIT_BRANCH_NAME" == "" ]; then 
+			export GIT_BRANCH_NAME=master
+		fi
+		if [[ "$GIT_USER" != "" && "$GIT_EMAIL" != "" && "$GITHUB_ACCESS_TOKEN" != "" ]]; then 
+			if [ "$GIT_USER_UPSTREAM" == "" ]; then 
+				export GIT_USER_UPSTREAM=$GIT_USER
+			fi
 		
-		pip install git+https://github.com/sat28/githubcommit.git
-		jupyter serverextension enable --py githubcommit
-		jupyter nbextension install --py githubcommit
-		jupyter nbextension enable githubcommit --py
+			pip install git+https://github.com/sat28/githubcommit.git
+			jupyter serverextension enable --py githubcommit
+			jupyter nbextension install --py githubcommit
+			jupyter nbextension enable githubcommit --py
 		
-		cd $GITHUB_COMMIT_DIR && git clone https://github.com/sat28/githubcommit
-		rm -rf $GITHUB_COMMIT_DIR/githubcommit/env.sh
-		mv /opt/env.sh $GITHUB_COMMIT_DIR/githubcommit/
+			cd $GITHUB_COMMIT_DIR && git clone https://github.com/sat28/githubcommit
+			rm -rf $GITHUB_COMMIT_DIR/githubcommit/env.sh
+			mv /opt/env.sh $GITHUB_COMMIT_DIR/githubcommit/
 		
-		sed "s/GITHUB_COMMIT_DIR=/GITHUB_COMMIT_DIR=$GITUB_COMMIT_DIR/" $GITHUB_COMMIT_DIR/githubcommit/env.sh >> $GITHUB_COMMIT_DIR/githubcommit/env.sh.tmp && \
-		mv $GITHUB_COMMIT_DIR/githubcommit/env.sh.tmp $GITHUB_COMMIT_DIR/githubcommit/env.sh
+			sed "s/GITHUB_COMMIT_DIR=/GITHUB_COMMIT_DIR=$GITUB_COMMIT_DIR/" $GITHUB_COMMIT_DIR/githubcommit/env.sh >> $GITHUB_COMMIT_DIR/githubcommit/env.sh.tmp && \
+			mv $GITHUB_COMMIT_DIR/githubcommit/env.sh.tmp $GITHUB_COMMIT_DIR/githubcommit/env.sh
 		
-		sed "s/GIT_PARENT_DIR=/GIT_PARENT_DIR=$GIT_PARENT_DIR/" $GITHUB_COMMIT_DIR/githubcommit/env.sh >> $GITHUB_COMMIT_DIR/githubcommit/env.sh.tmp && \
-		mv $GITHUB_COMMIT_DIR/githubcommit/env.sh.tmp $GITHUB_COMMIT_DIR/githubcommit/env.sh
+			sed "s/GIT_PARENT_DIR=/GIT_PARENT_DIR=$GIT_PARENT_DIR/" $GITHUB_COMMIT_DIR/githubcommit/env.sh >> $GITHUB_COMMIT_DIR/githubcommit/env.sh.tmp && \
+			mv $GITHUB_COMMIT_DIR/githubcommit/env.sh.tmp $GITHUB_COMMIT_DIR/githubcommit/env.sh
 		
-		sed "s/GIT_REPO_NAME=/GIT_REPO_NAME=$GIT_REPO_NAME/" $GITHUB_COMMIT_DIR/githubcommit/env.sh >> $GITHUB_COMMIT_DIR/githubcommit/env.sh.tmp && \
-		mv $GITHUB_COMMIT_DIR/githubcommit/env.sh.tmp $GITHUB_COMMIT_DIR/githubcommit/env.sh
+			sed "s/GIT_REPO_NAME=/GIT_REPO_NAME=$GIT_REPO_NAME/" $GITHUB_COMMIT_DIR/githubcommit/env.sh >> $GITHUB_COMMIT_DIR/githubcommit/env.sh.tmp && \
+			mv $GITHUB_COMMIT_DIR/githubcommit/env.sh.tmp $GITHUB_COMMIT_DIR/githubcommit/env.sh
 		
-		sed "s/GIT_BRANCH_NAME=/GIT_BRANCH_NAME=$GIT_BRANCH_NAME/" $GITHUB_COMMIT_DIR/githubcommit/env.sh >> $GITHUB_COMMIT_DIR/githubcommit/env.sh.tmp && \
-		mv $GITHUB_COMMIT_DIR/githubcommit/env.sh.tmp $GITHUB_COMMIT_DIR/githubcommit/env.sh
+			sed "s/GIT_BRANCH_NAME=/GIT_BRANCH_NAME=$GIT_BRANCH_NAME/" $GITHUB_COMMIT_DIR/githubcommit/env.sh >> $GITHUB_COMMIT_DIR/githubcommit/env.sh.tmp && \
+			mv $GITHUB_COMMIT_DIR/githubcommit/env.sh.tmp $GITHUB_COMMIT_DIR/githubcommit/env.sh
 		
-		sed "s/GIT_USER=/GIT_USER=$GIT_USER/" $GITHUB_COMMIT_DIR/githubcommit/env.sh >> $GITHUB_COMMIT_DIR/githubcommit/env.sh.tmp && \
-		mv $GITHUB_COMMIT_DIR/githubcommit/env.sh.tmp $GITHUB_COMMIT_DIR/githubcommit/env.sh
+			sed "s/GIT_USER=/GIT_USER=$GIT_USER/" $GITHUB_COMMIT_DIR/githubcommit/env.sh >> $GITHUB_COMMIT_DIR/githubcommit/env.sh.tmp && \
+			mv $GITHUB_COMMIT_DIR/githubcommit/env.sh.tmp $GITHUB_COMMIT_DIR/githubcommit/env.sh
 		
-		sed "s/GIT_EMAIL=/GIT_EMAIL=$GIT_EMAIL/" $GITHUB_COMMIT_DIR/githubcommit/env.sh >> $GITHUB_COMMIT_DIR/githubcommit/env.sh.tmp && \
-		mv $GITHUB_COMMIT_DIR/githubcommit/env.sh.tmp $GITHUB_COMMIT_DIR/githubcommit/env.sh
+			sed "s/GIT_EMAIL=/GIT_EMAIL=$GIT_EMAIL/" $GITHUB_COMMIT_DIR/githubcommit/env.sh >> $GITHUB_COMMIT_DIR/githubcommit/env.sh.tmp && \
+			mv $GITHUB_COMMIT_DIR/githubcommit/env.sh.tmp $GITHUB_COMMIT_DIR/githubcommit/env.sh
 		
-		sed "s/GITHUB_ACCESS_TOKEN=/GITHUB_ACCESS_TOKEN=$GITHUB_ACCESS_TOKEN/" $GITHUB_COMMIT_DIR/githubcommit/env.sh >> $GITHUB_COMMIT_DIR/githubcommit/env.sh.tmp && \
-		mv $GITHUB_COMMIT_DIR/githubcommit/env.sh.tmp $GITHUB_COMMIT_DIR/githubcommit/env.sh
+			sed "s/GITHUB_ACCESS_TOKEN=/GITHUB_ACCESS_TOKEN=$GITHUB_ACCESS_TOKEN/" $GITHUB_COMMIT_DIR/githubcommit/env.sh >> $GITHUB_COMMIT_DIR/githubcommit/env.sh.tmp && \
+			mv $GITHUB_COMMIT_DIR/githubcommit/env.sh.tmp $GITHUB_COMMIT_DIR/githubcommit/env.sh
 		
-		sed "s/GIT_USER_UPSTREAM=/GIT_USER_UPSTREAM=$GIT_USER_UPSTREAM/" $GITHUB_COMMIT_DIR/githubcommit/env.sh >> $GITHUB_COMMIT_DIR/githubcommit/env.sh.tmp && \
-		mv $GITHUB_COMMIT_DIR/githubcommit/env.sh.tmp $GITHUB_COMMIT_DIR/githubcommit/env.sh
+			sed "s/GIT_USER_UPSTREAM=/GIT_USER_UPSTREAM=$GIT_USER_UPSTREAM/" $GITHUB_COMMIT_DIR/githubcommit/env.sh >> $GITHUB_COMMIT_DIR/githubcommit/env.sh.tmp && \
+			mv $GITHUB_COMMIT_DIR/githubcommit/env.sh.tmp $GITHUB_COMMIT_DIR/githubcommit/env.sh
 		
-		git config --global user.email "$GIT_EMAIL"
-		git config --global user.name "$GIT_USER"
+			git config --global user.email "$GIT_EMAIL"
+			git config --global user.name "$GIT_USER"
 		
-		source $GITHUB_COMMIT_DIR/githubcommit/env.sh
-		cd $GIT_PARENT_DIR/$GIT_REPO_NAME && \
-		git config remote.master.url https://$GIT_USER:$GIT_ACCESS_TOKEN@github.com/$GIT_USER/$GIT_REPO_NAME.git
+			source $GITHUB_COMMIT_DIR/githubcommit/env.sh
+			cd $GIT_PARENT_DIR/$GIT_REPO_NAME && \
+			git config remote.master.url https://$GIT_USER:$GIT_ACCESS_TOKEN@github.com/$GIT_USER/$GIT_REPO_NAME.git
 		
-		rm -rf $CONDA_DIR/lib/python2.7/site-packages/githubcommit/handlers.py
-		mv /opt/env.sh $CONDA_DIR/lib/python2.7/site-packages/githubcommit/
+			rm -rf $CONDA_DIR/lib/python2.7/site-packages/githubcommit/handlers.py
+			mv /opt/env.sh $CONDA_DIR/lib/python2.7/site-packages/githubcommit/
+		fi
 	fi
 fi
 
 export TERM=xterm
 
-#Install sparkmonitor extension
+if [ "$MODE" == "master" ]; then 
+	#Install sparkmonitor extension
+	export SPARKMONITOR_UI_HOST=$SPARK_PUBLIC_DNS
+	export SPARKMONITOR_UI_PORT=$SPARK_UI_PORT
 
-export SPARKMONITOR_UI_HOST=$SPARK_PUBLIC_DNS
-export SPARKMONITOR_UI_PORT=$SPARK_UI_PORT
+	pip install https://github.com/krishnan-r/sparkmonitor/releases/download/v0.0.1/sparkmonitor.tar.gz #Use latest version as in github releases
 
-pip install https://github.com/krishnan-r/sparkmonitor/releases/download/v0.0.1/sparkmonitor.tar.gz #Use latest version as in github releases
+	jupyter nbextension install sparkmonitor --py --user --symlink 
+	jupyter nbextension enable sparkmonitor --py --user            
+	jupyter serverextension enable --py --user sparkmonitor
 
-jupyter nbextension install sparkmonitor --py --user --symlink 
-jupyter nbextension enable sparkmonitor --py --user            
-jupyter serverextension enable --py --user sparkmonitor
-
-ipython profile create && echo "c.InteractiveShellApp.extensions.append('sparkmonitor')" >>  $(ipython profile locate default)/ipython_kernel_config.py
+	ipython profile create && echo "c.InteractiveShellApp.extensions.append('sparkmonitor')" >>  $(ipython profile locate default)/ipython_kernel_config.py
+fi
 
 if [ "$MODE" == "" ]; then
 MODE=$1
 fi
 
 CLASSPATH=$SPARK_HOME/jars/
+
+#Configure dl client libraries
+export PATH=$PATH:/opt/client-libraries/datalake-client-libraries-untagged-f226f24f5fd0feabde54/src/bin/dl
+cp /opt/spark-2.3.0-bin-hadoop2.7/conf/core-site.xml /opt/client-libraries/datalake-client-libraries-untagged-f226f24f5fd0feabde54/src/conf/
 
 if [ "$MODE" == "master" ]; then 
 	nohup ${SPARK_HOME}/bin/spark-class "org.apache.spark.deploy.master.Master" -h $SPARK_MASTER_HOSTNAME --port $SPARK_MASTER_PORT --webui-port $SPARK_MASTER_WEBUI_PORT &
