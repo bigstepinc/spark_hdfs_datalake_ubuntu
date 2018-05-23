@@ -8,7 +8,7 @@ ADD handlers.py /opt/
 
 ADD core-site.xml.datalake /opt/spark-2.3.0-bin-hadoop2.7/conf/
 ADD core-site.xml.datalake.integration /opt/spark-2.3.0-bin-hadoop2.7/conf/
-ADD spark-defaults.conf /opt/spark-2.3.0-bin-hadoop2.7/conf/spark-defaults.conf.template
+ADD spark-defaults.conf /opt/spark-2.3.0-bin-hadoop2.7/conf/spark-defaults.conf
 ADD hive-site.xml /opt/spark-2.3.0-bin-hadoop2.7/conf/
 
 ADD krb5.conf.integration /etc/
@@ -84,7 +84,7 @@ RUN pip install nbpresent jupyter-spark lxml && \
    jupyter nbextension enable --py widgetsnbextension
 
 #Add Spark progress bar extension
-#RUN pip install jupyter-spark
+RUN pip install jupyter-spark
 
 #RUN pip install lxml
 
@@ -188,13 +188,6 @@ RUN cd /tmp && \
     rm -rf untagged-f226f24f5fd0feabde54.tar.gz && \
     export PATH=$PATH:/opt/client-libraries/datalake-client-libraries-untagged-f226f24f5fd0feabde54/src/bin/dl
     
-##RUN cp $SPARK_HOME/jars/commons-crypto-1.0.0.jar /opt/hadoop/share/hadoop/common/
-##RUN cp $SPARK_HOME/jars/commons-crypto-1.0.0.jar /opt/hadoop/share/hadoop/common/lib/
-    
- # Get the right Toree Assembly Jar
-##RUN wget http://repo.bigstepcloud.com/bigstep/datalab/toree-assembly-0.2.0.dev1-incubating-SNAPSHOT.jar -O /opt/toree-kernel/lib/toree-assembly-0.2.0.dev1-incubating-SNAPSHOT.jar
-#RUN wget http://repo.bigstepcloud.com/bigstep/datalab/toree-assembly-0.3.0.dev1-incubating-SNAPSHOT.jar -O /opt/toree-kernel/lib/toree-assembly-0.3.0.dev1-incubating-SNAPSHOT.jar
-
 #        SparkMaster  SparkMasterWebUI  SparkWorkerWebUI REST     Jupyter Spark		Thrift
 EXPOSE    7077        8080              8081              6066    8888      4040     88   10000
 
