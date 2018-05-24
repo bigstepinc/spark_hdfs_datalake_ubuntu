@@ -28,6 +28,7 @@ mv $SPARK_HOME/conf/core-site.xml.datalake $SPARK_HOME/conf/core-site.xml
 
 if [ "$DEV" == "integration" ]; then 
 	cp /etc/krb5.conf.integration /etc/krb5.conf
+	cp /etc/krb5.conf /opt/datalake-1.5-SNAPSHOT/conf/
 	mv $SPARK_HOME/conf/core-site.xml.datalake.integration $SPARK_HOME/conf/core-site.xml			
 fi
 
