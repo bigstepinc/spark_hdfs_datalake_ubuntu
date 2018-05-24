@@ -181,12 +181,11 @@ RUN cd /tmp && \
     chmod +x /opt/toree-kernel && \
     rm -rf /tmp/incubator-toree && \
     wget http://repo.bigstepcloud.com/bigstep/datalab/toree-assembly-0.3.0.dev1-incubating-SNAPSHOT.jar -O /opt/toree-kernel/lib/toree-assembly-0.3.0.dev1-incubating-SNAPSHOT.jar && \
-    mkdir /opt/client-libraries && \
-    cd /opt/client-libraries && \
-    wget https://github.com/bigstepinc/datalake-client-libraries/archive/untagged-f226f24f5fd0feabde54.tar.gz && \
-    tar xzvf untagged-f226f24f5fd0feabde54.tar.gz && \
-    rm -rf untagged-f226f24f5fd0feabde54.tar.gz && \
-    export PATH=$PATH:/opt/client-libraries/datalake-client-libraries-untagged-f226f24f5fd0feabde54/src/bin/dl
+    cd /opt/ && \
+    wget http://repo.uk.bigstepcloud.com/bigstep/datalab/datalake-1.5-SNAPSHOT-bin.tar.gz && \
+    tar xzvf datalake-1.5-SNAPSHOT-bin.tar.gz && \
+    rm -rf datalake-1.5-SNAPSHOT-bin.tar.gz && \
+    export PATH=$PATH:/opt/datalake-1.5-SNAPSHOT/bin/dl
     
 #        SparkMaster  SparkMasterWebUI  SparkWorkerWebUI REST     Jupyter Spark		Thrift
 EXPOSE    7077        8080              8081              6066    8888      4040     88   10000
