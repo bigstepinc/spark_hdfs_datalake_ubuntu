@@ -305,11 +305,6 @@ export PGPASSWORD=$SPARK_POSTGRES_PASSWORD
 
 psql -h $POSTGRES_HOSTNAME -p $POSTGRES_PORT  -U  $SPARK_POSTGRES_USER -d $SPARK_POSTGRES_DB -f /opt/spark-2.3.0-bin-hadoop2.7/jars/hive-schema-1.2.0.postgres.sql
 
-#hdfs dfs -mkdir /tmp
-#hdfs dfs -mkdir /tmp/hive 
-
-#Check if there is no workaround this permissions
-#hdfs dfs -chmod -R 777 /tmp/hive
 
 if [ "$MODE" == "master" ]; then 
 	export NOTEBOOK_PASSWORD=$(cat $SPARK_SECRETS_PATH/NOTEBOOK_PASSWORD)
@@ -432,6 +427,13 @@ if [ "$MODE" == "master" ]; then
 
 	ipython profile create && echo "c.InteractiveShellApp.extensions.append('sparkmonitor')" >>  $(ipython profile locate default)/ipython_kernel_config.py
 fi
+
+cp $SPARK_HOME/conf/core-site.xml /opt/datalake-1.5-SNAPSHOT/conf/
+
+export PATH=$PATH:/opt/datalake-1.5-SNAPSHOT/bin
+dl -mkdir /tmp
+dl -mkdir /tmp/hive 
+dl -chmod -R 777 /tmp/hive
 
 if [ "$MODE" == "" ]; then
 MODE=$1
