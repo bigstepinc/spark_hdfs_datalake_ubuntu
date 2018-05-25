@@ -185,7 +185,7 @@ RUN cd /tmp && \
     wget http://repo.uk.bigstepcloud.com/bigstep/datalab/datalake-1.5-SNAPSHOT-bin.tar.gz && \
     tar xzvf datalake-1.5-SNAPSHOT-bin.tar.gz && \
     rm -rf datalake-1.5-SNAPSHOT-bin.tar.gz && \
-    export PATH=$PATH:/opt/datalake-1.5-SNAPSHOT/bin/dl
+    export PATH=$PATH:/opt/datalake-1.5-SNAPSHOT/bin
     
 #        SparkMaster  SparkMasterWebUI  SparkWorkerWebUI REST     Jupyter Spark		Thrift
 EXPOSE    7077        8080              8081              6066    8888      4040     88   10000
