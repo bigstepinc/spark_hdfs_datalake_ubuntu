@@ -426,7 +426,8 @@ if [ "$MODE" == "master" ]; then
 	jupyter nbextension enable sparkmonitor --py --user            
 	jupyter serverextension enable --py --user sparkmonitor
 
-	ipython profile create && echo "c.InteractiveShellApp.extensions.append('sparkmonitor')" >>  $(ipython profile locate default)/ipython_kernel_config.py
+	#ipython profile create && echo "c.InteractiveShellApp.extensions.append('sparkmonitor')" >>  $(ipython profile locate default)/ipython_kernel_config.py
+	ipython profile create && echo "c.InteractiveShellApp.extensions.append('sparkmonitor.kernelextension')" >> $(ipython profile locate default)/ipython_kernel_config.py
 fi
 
 cp $SPARK_HOME/conf/core-site.xml /opt/datalake-1.5-SNAPSHOT/conf/
