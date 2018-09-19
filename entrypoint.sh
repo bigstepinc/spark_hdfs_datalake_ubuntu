@@ -432,7 +432,7 @@ fi
 
 cp $SPARK_HOME/conf/core-site.xml /opt/datalake-1.5-SNAPSHOT/conf/
 
-export PATH=$PATH:/opt/datalake-1.5-SNAPSHOT/bin
+export PATH=/opt/datalake-1.5-SNAPSHOT/bin:$PATH
 dl -mkdir /tmp
 dl -mkdir /tmp/hive 
 dl -chmod -R 777 /tmp/hive
