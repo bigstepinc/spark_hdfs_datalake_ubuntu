@@ -16,7 +16,7 @@ ADD krb5.conf /etc/
 
 # Install Java 8
 ENV JAVA_HOME /opt/jdk1.8.0_181
-ENV PATH $PATH:/opt/jdk1.8.0_181/bin:/opt/jdk1.8.0_181/jre/bin:/etc/alternatives:/var/lib/dpkg/alternatives
+ENV PATH $PATH:$JAVA_HOME/bin:$JAVA_HOME/jre/bin:/etc/alternatives:/var/lib/dpkg/alternatives
 
 RUN apt-get -qq update -y
 RUN apt-get install -y unzip wget curl tar bzip2 software-properties-common git
@@ -26,8 +26,8 @@ RUN cd /opt && wget --no-cookies --no-check-certificate --header "Cookie: gpw_e2
 
 
 RUN echo 'export JAVA_HOME="/opt/jdk1.8.0_181"' >> ~/.bashrc && \
-    echo 'export PATH="$PATH:/opt/jdk1.8.0_181/bin:/opt/jdk1.8.0_181/jre/bin"' >> ~/.bashrc && \
-    bash ~/.bashrc && cd /opt/jdk1.8.0_181/ && update-alternatives --install /usr/bin/java java /opt/jdk1.8.0_181/bin/java 1
+    echo 'export PATH="$PATH:$JAVA_HOME/bin:$JAVA_HOME/jre/bin"' >> ~/.bashrc && \
+    bash ~/.bashrc && cd $JAVA_HOME && update-alternatives --install /usr/bin/java java $JAVA_HOME/bin/java 1
     
 #Add Java Security Policies
 RUN curl -L -C - -b "oraclelicense=accept-securebackup-cookie" -O http://download.oracle.com/otn-pub/java/jce/8/jce_policy-8.zip && \
@@ -36,9 +36,9 @@ RUN cp UnlimitedJCEPolicyJDK8/US_export_policy.jar $JAVA_HOME/jre/lib/security/ 
 RUN rm -rf UnlimitedJCEPolicyJDK8
 
 # Install Spark 2.3.0
-RUN cd /opt && wget http://apache.javapipe.com/spark/spark-2.3.0/spark-2.3.0-bin-hadoop2.7.tgz && \
+RUN cd /opt && wget https://archive.apache.org/dist/spark/spark-2.3.0/spark-2.3.0-bin-hadoop2.7.tgz && \
    tar xzvf /opt/spark-2.3.0-bin-hadoop2.7.tgz && \
-   rm  /opt/spark-2.3.0-bin-hadoop2.7.tgz 
+   rm  /opt/spark-2.3.0-bin-hadoop2.7.tgz
 
 # Spark pointers for Jupyter Notebook
 ENV SPARK_HOME /opt/spark-2.3.0-bin-hadoop2.7
