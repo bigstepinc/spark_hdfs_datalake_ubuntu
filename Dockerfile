@@ -117,9 +117,9 @@ RUN /root/jq-linux64 --arg v "$CONDA_DIR/envs/python3/bin/python"         '.["en
     mv /tmp/kernel.json /opt/conda/share/jupyter/kernels/python3/kernel.json
 
 #Install R kernel and set up environment
-RUN $CONDA_DIR/bin/conda config --add channels r
-RUN $CONDA_DIR/bin/conda install --yes -c r r-essentials r-base r-irkernel r-irdisplay r-ggplot2 r-repr r-rcurl
-RUN $CONDA_DIR/bin/conda create --yes  -n ir -c r r-essentials r-base r-irkernel r-irdisplay r-ggplot2 r-repr r-rcurl
+#RUN $CONDA_DIR/bin/conda config --add channels r
+#RUN $CONDA_DIR/bin/conda install --yes -c r r-essentials r-base r-irkernel r-irdisplay r-ggplot2 r-repr r-rcurl
+#RUN $CONDA_DIR/bin/conda create --yes  -n ir -c r r-essentials r-base r-irkernel r-irdisplay r-ggplot2 r-repr r-rcurl
 
 #Configure Scala kernel
 RUN mkdir -p /opt/conda/share/jupyter/kernels/scala
