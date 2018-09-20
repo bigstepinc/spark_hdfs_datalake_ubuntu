@@ -129,7 +129,7 @@ RUN cd /root && wget http://central.maven.org/maven2/com/google/collections/goog
 
 #Add Getting Started Notebooks and change Jupyter logo and download additional libraries
 RUN wget http://repo.uk.bigstepcloud.com/bigstep/datalab/DataLab%20Getting%20Started%20in%20Scala%202018.ipynb -O /user/notebooks/DataLab\ Getting\ Started\ in\ Scala.ipynb && \
-   wget http://repo.uk.bigstepcloud.com/bigstep/datalab/DataLab%20Getting%20Started%20in%20R%202018.ipynb -O /user/notebooks/DataLab\ Getting\ Started\ in\ R.ipynb && \
+ #  wget http://repo.uk.bigstepcloud.com/bigstep/datalab/DataLab%20Getting%20Started%20in%20R%202018.ipynb -O /user/notebooks/DataLab\ Getting\ Started\ in\ R.ipynb && \
    wget http://repo.uk.bigstepcloud.com/bigstep/datalab/DataLab%20Getting%20Started%20in%20Python%202018.ipynb -O /user/notebooks/DataLab\ Getting\ Started\ in\ Python.ipynb && \
    wget http://repo.bigstepcloud.com/bigstep/datalab/logo.png -O logo.png && \
    cp logo.png $CONDA_DIR/envs/python3/doc/global/template/images/logo.png && \
