@@ -21,10 +21,37 @@ export HADOOP_CONF_DIR="$SPARK_HOME/conf"
 #export HADOOP_CLASSPATH="$HADOOP_HOME/share/hadoop/common/"
 export JAVA_CLASSPATH="$JAVA_HOME/jre/lib/"
 export JAVA_OPTS="-Dsun.security.krb5.debug=true -XX:MetaspaceSize=128M -XX:MaxMetaspaceSize=256M"
+export CONDA_DIR="/opt/conda"
 
 cp /opt/hadoop/share/hadoop/common/hadoop-common-2.7.5.jar /opt/spark-2.3.0-bin-hadoop2.7/jars/
 
 mv $SPARK_HOME/conf/core-site.xml.datalake $SPARK_HOME/conf/core-site.xml
+
+if [ "$MAX_CLIENTS" != "" ]; then
+	sed "s/def initialize(self, max_clients=10, defaults=None):/def initialize(self, max_clients=$MAX_CLIENTS, defaults=None):/" $CONDA_DIR/envs/python3/lib/python3.5/site-packages/tornado/curl_httpclient.py >> $CONDA_DIR/envs/python3/lib/python3.5/site-packages/tornado/curl_httpclient.py.tmp  && \
+	mv $CONDA_DIR/envs/python3/lib/python3.5/site-packages/tornado/curl_httpclient.py.tmp $CONDA_DIR/envs/python3/lib/python3.5/site-packages/tornado/curl_httpclient.py
+	
+	sed "s/def initialize(self, max_clients=10,/def initialize(self, max_clients=$MAX_CLIENTS,/" $CONDA_DIR/envs/python3/lib/python3.5/site-packages/tornado/simple_httpclient.py >> $CONDA_DIR/envs/python3/lib/python3.5/site-packages/tornado/simple_httpclient.py.tmp && \
+	mv $CONDA_DIR/envs/python3/lib/python3.5/site-packages/tornado/simple_httpclient.py.tmp $CONDA_DIR/envs/python3/lib/python3.5/site-packages/tornado/simple_httpclient.py
+	
+	sed "s/def initialize(self, max_clients=10, defaults=None):/def initialize(self, max_clients=$MAX_CLIENTS, defaults=None):/" $CONDA_DIR/lib/python2.7/site-packages/tornado/curl_httpclient.py >> $CONDA_DIR/lib/python2.7/site-packages/tornado/curl_httpclient.py.tmp && \
+	mv $CONDA_DIR/lib/python2.7/site-packages/tornado/curl_httpclient.py.tmp $CONDA_DIR/lib/python2.7/site-packages/tornado/curl_httpclient.py
+	
+	sed "s/def initialize(self, max_clients=10,/def initialize(self, max_clients=$MAX_CLIENTS,/" $CONDA_DIR/lib/python2.7/site-packages/tornado/simple_httpclient.py >> $CONDA_DIR/lib/python2.7/site-packages/tornado/simple_httpclient.py.tmp && \
+	mv $CONDA_DIR/lib/python2.7/site-packages/tornado/simple_httpclient.py.tmp $CONDA_DIR/lib/python2.7/site-packages/tornado/simple_httpclient.py
+	
+	sed "s/def initialize(self, max_clients=10, defaults=None):/def initialize(self, max_clients=$MAX_CLIENTS, defaults=None):/" $CONDA_DIR/pkgs/tornado-5.1-py27h14c3975_0/lib/python2.7/site-packages/tornado/curl_httpclient.py >> $CONDA_DIR/pkgs/tornado-5.1-py27h14c3975_0/lib/python2.7/site-packages/tornado/curl_httpclient.py.tmp && \ 
+	mv $CONDA_DIR/pkgs/tornado-5.1-py27h14c3975_0/lib/python2.7/site-packages/tornado/curl_httpclient.py.tmp $CONDA_DIR/pkgs/tornado-5.1-py27h14c3975_0/lib/python2.7/site-packages/tornado/curl_httpclient.py
+	
+	sed "s/def initialize(self, max_clients=10,/def initialize(self, max_clients=$MAX_CLIENTS,/" $CONDA_DIR/pkgs/tornado-5.1-py27h14c3975_0/lib/python2.7/site-packages/tornado/simple_httpclient.py >> $CONDA_DIR/pkgs/tornado-5.1-py27h14c3975_0/lib/python2.7/site-packages/tornado/simple_httpclient.py.tmp && \
+ 	mv $CONDA_DIR/pkgs/tornado-5.1-py27h14c3975_0/lib/python2.7/site-packages/tornado/simple_httpclient.py.tmp $CONDA_DIR/pkgs/tornado-5.1-py27h14c3975_0/lib/python2.7/site-packages/tornado/simple_httpclient.py
+	
+	sed "s/def initialize(self, max_clients=10, defaults=None):/def initialize(self, max_clients=$MAX_CLIENTS, defaults=None):/" $CONDA_DIR/pkgs/tornado-5.1-py35h14c3975_0/lib/python3.5/site-packages/tornado/curl_httpclient.py >> $CONDA_DIR/pkgs/tornado-5.1-py35h14c3975_0/lib/python3.5/site-packages/tornado/curl_httpclient.py.tmp && \
+	mv $CONDA_DIR/pkgs/tornado-5.1-py35h14c3975_0/lib/python3.5/site-packages/tornado/curl_httpclient.py.tmp $CONDA_DIR/pkgs/tornado-5.1-py35h14c3975_0/lib/python3.5/site-packages/tornado/curl_httpclient.py
+	
+	sed "s/def initialize(self, max_clients=10,/def initialize(self, max_clients=$MAX_CLIENTS,/" $CONDA_DIR/pkgs/tornado-5.1-py35h14c3975_0/lib/python3.5/site-packages/tornado/simple_httpclient.py >> $CONDA_DIR/pkgs/tornado-5.1-py35h14c3975_0/lib/python3.5/site-packages/tornado/simple_httpclient.py.tmp && \
+	mv $CONDA_DIR/pkgs/tornado-5.1-py35h14c3975_0/lib/python3.5/site-packages/tornado/simple_httpclient.py.tmp $CONDA_DIR/pkgs/tornado-5.1-py35h14c3975_0/lib/python3.5/site-packages/tornado/simple_httpclient.py
+fi
 
 if [ "$DEV" == "integration" ]; then 
 	cp /etc/krb5.conf.integration /etc/krb5.conf
