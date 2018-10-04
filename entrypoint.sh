@@ -27,6 +27,10 @@ cp /opt/hadoop/share/hadoop/common/hadoop-common-2.7.5.jar /opt/spark-2.3.0-bin-
 
 mv $SPARK_HOME/conf/core-site.xml.datalake $SPARK_HOME/conf/core-site.xml
 
+if [ "$MAX_CLIENTS" == "" ]; then
+	export MAX_CLIENTS=30
+fi
+
 if [ "$MAX_CLIENTS" != "" ]; then
 	sed "s/def initialize(self, max_clients=10, defaults=None):/def initialize(self, max_clients=$MAX_CLIENTS, defaults=None):/" $CONDA_DIR/envs/python3/lib/python3.5/site-packages/tornado/curl_httpclient.py >> $CONDA_DIR/envs/python3/lib/python3.5/site-packages/tornado/curl_httpclient.py.tmp  && \
 	mv $CONDA_DIR/envs/python3/lib/python3.5/site-packages/tornado/curl_httpclient.py.tmp $CONDA_DIR/envs/python3/lib/python3.5/site-packages/tornado/curl_httpclient.py
