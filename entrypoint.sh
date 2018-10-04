@@ -32,6 +32,10 @@ if [ "$MAX_CLIENTS" == "" ]; then
 fi
 
 if [ "$MAX_CLIENTS" != "" ]; then
+
+	export PYTHON27_DIR=$(ls /opt/conda/pkgs/ -I *.tar* -I tk* -I *py35* | grep tornado | tail)
+	export PYTHON35_DIR=$(ls /opt/conda/pkgs/ -I *.tar* -I tk* -I *py27* | grep tornado | tail)
+
 	sed "s/def initialize(self, max_clients=10, defaults=None):/def initialize(self, max_clients=$MAX_CLIENTS, defaults=None):/" $CONDA_DIR/envs/python3/lib/python3.5/site-packages/tornado/curl_httpclient.py >> $CONDA_DIR/envs/python3/lib/python3.5/site-packages/tornado/curl_httpclient.py.tmp  && \
 	mv $CONDA_DIR/envs/python3/lib/python3.5/site-packages/tornado/curl_httpclient.py.tmp $CONDA_DIR/envs/python3/lib/python3.5/site-packages/tornado/curl_httpclient.py
 	
@@ -44,17 +48,17 @@ if [ "$MAX_CLIENTS" != "" ]; then
 	sed "s/def initialize(self, max_clients=10,/def initialize(self, max_clients=$MAX_CLIENTS,/" $CONDA_DIR/lib/python2.7/site-packages/tornado/simple_httpclient.py >> $CONDA_DIR/lib/python2.7/site-packages/tornado/simple_httpclient.py.tmp && \
 	mv $CONDA_DIR/lib/python2.7/site-packages/tornado/simple_httpclient.py.tmp $CONDA_DIR/lib/python2.7/site-packages/tornado/simple_httpclient.py
 	
-	sed "s/def initialize(self, max_clients=10, defaults=None):/def initialize(self, max_clients=$MAX_CLIENTS, defaults=None):/" $CONDA_DIR/pkgs/tornado-5.1-py27h14c3975_0/lib/python2.7/site-packages/tornado/curl_httpclient.py >> $CONDA_DIR/pkgs/tornado-5.1-py27h14c3975_0/lib/python2.7/site-packages/tornado/curl_httpclient.py.tmp && \ 
-	mv $CONDA_DIR/pkgs/tornado-5.1-py27h14c3975_0/lib/python2.7/site-packages/tornado/curl_httpclient.py.tmp $CONDA_DIR/pkgs/tornado-5.1-py27h14c3975_0/lib/python2.7/site-packages/tornado/curl_httpclient.py
+	sed "s/def initialize(self, max_clients=10, defaults=None):/def initialize(self, max_clients=$MAX_CLIENTS, defaults=None):/" $CONDA_DIR/pkgs/$PYTHON27_DIR/lib/python2.7/site-packages/tornado/curl_httpclient.py >> $CONDA_DIR/pkgs/$PYTHON27_DIR/lib/python2.7/site-packages/tornado/curl_httpclient.py.tmp && \ 
+	mv $CONDA_DIR/pkgs/$PYTHON27_DIR/lib/python2.7/site-packages/tornado/curl_httpclient.py.tmp $CONDA_DIR/pkgs/$PYTHON27_DIR/lib/python2.7/site-packages/tornado/curl_httpclient.py
 	
-	sed "s/def initialize(self, max_clients=10,/def initialize(self, max_clients=$MAX_CLIENTS,/" $CONDA_DIR/pkgs/tornado-5.1-py27h14c3975_0/lib/python2.7/site-packages/tornado/simple_httpclient.py >> $CONDA_DIR/pkgs/tornado-5.1-py27h14c3975_0/lib/python2.7/site-packages/tornado/simple_httpclient.py.tmp && \
- 	mv $CONDA_DIR/pkgs/tornado-5.1-py27h14c3975_0/lib/python2.7/site-packages/tornado/simple_httpclient.py.tmp $CONDA_DIR/pkgs/tornado-5.1-py27h14c3975_0/lib/python2.7/site-packages/tornado/simple_httpclient.py
+	sed "s/def initialize(self, max_clients=10,/def initialize(self, max_clients=$MAX_CLIENTS,/" $CONDA_DIR/pkgs/$PYTHON27_DIR/lib/python2.7/site-packages/tornado/simple_httpclient.py >> $CONDA_DIR/pkgs/$PYTHON27_DIR/lib/python2.7/site-packages/tornado/simple_httpclient.py.tmp && \
+ 	mv $CONDA_DIR/pkgs/$PYTHON27_DIR/lib/python2.7/site-packages/tornado/simple_httpclient.py.tmp $CONDA_DIR/pkgs/$PYTHON27_DIR/lib/python2.7/site-packages/tornado/simple_httpclient.py
 	
-	sed "s/def initialize(self, max_clients=10, defaults=None):/def initialize(self, max_clients=$MAX_CLIENTS, defaults=None):/" $CONDA_DIR/pkgs/tornado-5.1-py35h14c3975_0/lib/python3.5/site-packages/tornado/curl_httpclient.py >> $CONDA_DIR/pkgs/tornado-5.1-py35h14c3975_0/lib/python3.5/site-packages/tornado/curl_httpclient.py.tmp && \
-	mv $CONDA_DIR/pkgs/tornado-5.1-py35h14c3975_0/lib/python3.5/site-packages/tornado/curl_httpclient.py.tmp $CONDA_DIR/pkgs/tornado-5.1-py35h14c3975_0/lib/python3.5/site-packages/tornado/curl_httpclient.py
+	sed "s/def initialize(self, max_clients=10, defaults=None):/def initialize(self, max_clients=$MAX_CLIENTS, defaults=None):/" $CONDA_DIR/pkgs/$PYTHON35_DIR/lib/python3.5/site-packages/tornado/curl_httpclient.py >> $CONDA_DIR/pkgs/tornado-5.1-py35h14c3975_0/lib/python3.5/site-packages/tornado/curl_httpclient.py.tmp && \
+	mv $CONDA_DIR/pkgs/$PYTHON35_DIR/lib/python3.5/site-packages/tornado/curl_httpclient.py.tmp $CONDA_DIR/pkgs/$PYTHON35_DIR/lib/python3.5/site-packages/tornado/curl_httpclient.py
 	
-	sed "s/def initialize(self, max_clients=10,/def initialize(self, max_clients=$MAX_CLIENTS,/" $CONDA_DIR/pkgs/tornado-5.1-py35h14c3975_0/lib/python3.5/site-packages/tornado/simple_httpclient.py >> $CONDA_DIR/pkgs/tornado-5.1-py35h14c3975_0/lib/python3.5/site-packages/tornado/simple_httpclient.py.tmp && \
-	mv $CONDA_DIR/pkgs/tornado-5.1-py35h14c3975_0/lib/python3.5/site-packages/tornado/simple_httpclient.py.tmp $CONDA_DIR/pkgs/tornado-5.1-py35h14c3975_0/lib/python3.5/site-packages/tornado/simple_httpclient.py
+	sed "s/def initialize(self, max_clients=10,/def initialize(self, max_clients=$MAX_CLIENTS,/" $CONDA_DIR/pkgs/$PYTHON35_DIR/lib/python3.5/site-packages/tornado/simple_httpclient.py >> $CONDA_DIR/pkgs/$PYTHON35_DIR/lib/python3.5/site-packages/tornado/simple_httpclient.py.tmp && \
+	mv $CONDA_DIR/pkgs/$PYTHON35_DIR/lib/python3.5/site-packages/tornado/simple_httpclient.py.tmp $CONDA_DIR/pkgs/$PYTHON35_DIR/lib/python3.5/site-packages/tornado/simple_httpclient.py
 fi
 
 if [ "$DEV" == "integration" ]; then 
@@ -456,6 +460,9 @@ if [ "$MODE" == "master" ]; then
 	jupyter nbextension install sparkmonitor --py --user --symlink 
 	jupyter nbextension enable sparkmonitor --py --user            
 	jupyter serverextension enable --py --user sparkmonitor
+	
+	#disable conda
+	jupyter nbextension disable --py nb_conda
 
 	#ipython profile create && echo "c.InteractiveShellApp.extensions.append('sparkmonitor')" >>  $(ipython profile locate default)/ipython_kernel_config.py
 	ipython profile create && echo "c.InteractiveShellApp.extensions.append('sparkmonitor.kernelextension')" >> $(ipython profile locate default)/ipython_kernel_config.py
